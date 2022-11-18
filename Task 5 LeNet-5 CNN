@@ -1,0 +1,32 @@
+import numpy as np
+from keras.utils.np_utils import to_categorical
+from keras.models import Sequential
+from keras.layers import Dense,Conv2D,Flatten,MaxPool2D
+
+
+tf.keras.initializers.GlorotNormal()
+
+class LeNet(Sequential):
+  def __init__(self,num_classes):
+    super().__init__()
+
+    self.add(Conv2D(6,5,strides=1,activation='tanh',input_shape=(28,28,1),padding='same'))
+    self.add(AvgPool2D(2,strides=2))
+    self.add(Conv2D(16,5,strides=1,activation='tanh'))
+    self.add(AvgPool2D(2,strides=2))
+    self.add(Conv2D(120,5,strides=1,activation='tanh'))
+    self.add(Flatten())
+    self.add(Dense(84,activation='tanh'))
+    self.add(Dense(num_classes,activation='softmax'))
+
+    self.compile(optimizer='adam',
+                 loss='sparse_categorical_crossentropy',
+                 metrics='accuracy')
+                 
+                 
+model=LeNet(10)
+
+model.summary()
+
+
+
