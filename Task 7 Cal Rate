@@ -1,0 +1,12 @@
+import pandas as pd
+import numpy as np
+import numpy_financial as npf
+
+
+def rate(펀딩금액,원리금상환액,개월수):
+  x = []    # 빈 리스트 생성
+  x.append(-펀딩금액) #펀딩금액 입력
+  for i in range(개월수): #원리금상환액 입력
+    x.append(원리금상환액)    # append로 요소 추가
+  print(x)
+  print(npf.irr(x)) # 내부수익율 응용 기대이자율 산출
