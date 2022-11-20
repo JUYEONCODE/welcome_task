@@ -1,0 +1,40 @@
+import requests
+import pandas as pd
+import json
+from datetime import datetime, timedelta
+
+# API 설정
+url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey='
+authkey = '8drc1Y9ftjJRVrfSECFcD7xITFqqP0nQ'
+middle = '&searchdate='
+middle2 = '&data='
+data='AP01'
+
+# 시작일,종료일 설정
+start = "2022-01-03"
+last = "2022-11-20"
+
+# 시작일, 종료일 datetime 으로 변환
+start_date = datetime.strptime(start, "%Y-%m-%d")
+last_date = datetime.strptime(last, "%Y-%m-%d")
+x = []
+y = []
+# 종료일 까지 반복
+
+while start_date <= last_date:
+    searchdate = start_date.strftime("%Y%m%d")
+    url2 = url + authkey + middle + searchdate + middle2 + data
+      
+    response = requests.get(url2)
+    r_data = response.json()
+
+    x.append(searchdate)
+    
+    try:
+      y.append(r_data[22]['kftc_deal_bas_r'])
+    except:
+      y.append(y[-1]) # 주말 및 휴일 환율 미제공 이전일 환율로 대체
+    # 하루 더하기
+    start_date += timedelta(days=1)
+
+ 
