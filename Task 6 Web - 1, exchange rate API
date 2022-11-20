@@ -37,4 +37,25 @@ while start_date <= last_date:
     # 하루 더하기
     start_date += timedelta(days=1)
 
- 
+# 환율 데이터 프레임 생성
+df = pd.DataFrame([ x for x in zip(x,y)])
+df.columns = ['date' , 'exchange_rate']
+print(df)
+
+# 데이터 정제
+df.replace(',','',regex=True, inplace=True)
+
+# 데이터 타입 변환
+df['exchange_rate'] = df['exchange_rate'].astype('float')
+df['date'] = pd.to_datetime(df['date'])
+
+
+# 라인그래프 생성
+import matplotlib.pyplot as plt
+
+plt.plot(df['date'], df['exchange_rate'])
+plt.title('WON/USD')
+plt.xlabel('DATE')
+plt.ylabel('RATE')
+plt.show()
+
