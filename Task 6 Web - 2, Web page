@@ -1,0 +1,44 @@
+#보케 라이브러리 활용
+from bokeh.io import output_notebook, show
+from bokeh.plotting import figure
+
+
+#그래프 생성
+p = figure(plot_width=700,plot_height=200, x_axis_type="datetime")
+p.line(df_jan['date'], df_jan['exchange_rate'])
+show(p)
+
+
+# 진자 활용 웹페이지 구축
+import jinja2
+from bokeh.embed import components
+template = jinja2.Template('''\
+<html>
+<link href='http://cdn.pydata.org/bokeh/release/bokeh-2.3.3.min.css' rel='stylesheet' type ='text/css'>
+<script src='http://cdn.pydata.org/bokeh/release/bokeh-2.3.3.min.js'></script>
+<head><title>bokeh test</title>
+</head>
+<body>
+<h1>환율조회</h1>
+이 사이트는 환율조회를 하기 위한 공간입니다.
+{{script}}
+{{div}}
+
+</body>
+</html>
+'''
+)
+
+#그래프 정보 추출
+script, div = components(p)
+
+#HTML 렌더링
+from IPython.display import HTML
+HTML(template.render(script=script, div=div))
+
+#브라우져 오픈
+with open('a.html','w') as f: 
+  f.write(template.render(script=script, div=div))
+import webbrowser
+
+webbrowser.open('a.html')
